@@ -6,7 +6,12 @@ namespace NurseSchedulingApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var solver = new Solver();
+            solver.Solve();
+            
+            
+            solver.PrintSolution();
+            Console.ReadLine();
         }
     }
 }
