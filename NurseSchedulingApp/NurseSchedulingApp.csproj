@@ -9,4 +9,10 @@
     <None Remove="schedule.csv" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\Tests\tests.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

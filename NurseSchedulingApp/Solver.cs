@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
+using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
@@ -325,7 +327,7 @@ namespace NurseSchedulingApp
                 writer.WriteLine();
             }
 
-
+            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
 
             writer.Close();
 
@@ -336,7 +338,7 @@ namespace NurseSchedulingApp
                     WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
                     FileName = "cmd.exe",
                     Arguments =
-                        "/C copy C:\\Users\\juice\\source\\repos\\NurseSchedulingApp\\NurseSchedulingApp\\schedule.csv C:\\Users\\juice\\source\\repos\\NurseSchedulingApp\\Tests"
+                        $"/C copy {projectPath}\\NurseSchedulingApp\\schedule.csv {projectPath}\\NurseSchedulingApp\\Tests"
                 };
             processCopy.StartInfo = startInfo;
             processCopy.Start();
@@ -349,7 +351,7 @@ namespace NurseSchedulingApp
                     WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal,
                     FileName = "cmd.exe",
                     Arguments =
-                        "/C cd C:\\Users\\juice\\source\\repos\\NurseSchedulingApp\\Tests && py tests.py"
+                        $"/C cd {projectPath}\\NurseSchedulingApp\\Resources\\Tests && py tests.py"
                 };
             processTests.StartInfo = startInfo;
             processTests.Start();
