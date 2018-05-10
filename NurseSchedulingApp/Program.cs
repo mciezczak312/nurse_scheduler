@@ -7,7 +7,10 @@ namespace NurseSchedulingApp
         static void Main(string[] args)
         {
             var solver = new Solver();
-            solver.Solve();
+            while (solver.Solve() == 0)
+            {
+                
+            }
             
             
             solver.PrintSolution();
