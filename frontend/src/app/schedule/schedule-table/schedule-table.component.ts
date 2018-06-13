@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { ScheduleService } from '../../services/schedule.service';
+import { ScheduleService } from '../../common/services/schedule.service';
 import { ScheduleData } from '../one-day-schedule/one-day-schedule.component';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -28,6 +28,8 @@ export class ScheduleTableComponent {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
