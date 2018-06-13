@@ -14,7 +14,7 @@ namespace NurseSchedulingApp
             while (true)
             {
                 int res = solver.Solve();
-                if (res == 1) break;
+                if (res == 1 ) break;
             }
             Console.WriteLine(solver.RunTests());
             Console.ReadLine();

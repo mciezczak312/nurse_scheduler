@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header">
+      Constraints
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm">
+          <h5 class="card-title">Schedule table</h5>
+          <button type="button" class="btn btn-primary" (click)="getSchedule()">Generate Schedule</button>
+        </div>
+        <div class="col-sm" *ngIf="testsResult">
+          <h5>Hard Constraints</h5>
+          <div [ngClass]="{'constraint-passed' : true, 'constraint-failed': testsResult[i]!==0}" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">
+            {{i}}: Broken {{testsResult[i]}} times
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="scheduleData">
+    <div *ngFor="let i of [0,1,2,3,4]" class="schedule-week">
+      <pz-one-day-schedule *ngFor="let id of dayIds" [data]="scheduleData[i][id]" [day]="id"></pz-one-day-schedule>
+    </div>
+  </div>
+</div>
+

@@ -193,7 +193,7 @@ namespace NurseSchedulingApp
         {
             for (int i = 0; i < AllNurses; i++)
             {
-                if (FirstWeek[i, 33] == 1)
+                if (FirstWeek[i, 33] == 1 && FirstWeek[i, 28] == 1)
                 {
                     Solution[i, 4] = 1;
                     Solution[i, 9] = 1;
@@ -212,7 +212,7 @@ namespace NurseSchedulingApp
 
             for (int shift = 0; shift < AllDays * 5; shift++)
             {
-
+                
                 var day = GetDayFromShift(shift);
                 int shiftType = GetShiftType(shift);
 
@@ -337,7 +337,17 @@ namespace NurseSchedulingApp
                 }
             }
 
-
+            int tmpSum = 0;
+            for (int i = 0; i < AllNurses; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if (Solution[i, j] == 1) tmpSum++;
+                }
+                if (tmpSum > 10) return false;
+            }
+            
+            
 
             //one nurse doesnt want late shifts
             if (nurseId == 0 && GetShiftType(shift) == 2) return false;
@@ -416,6 +426,16 @@ namespace NurseSchedulingApp
                    Solution[nurseID, day * 5 + 2] == 1 ||
                    Solution[nurseID, day * 5 + 3] == 1;
         }
+
+        int ShiftsInDay(int nurseID, int day)
+        {
+            int sum = 0;
+            for (int i = 0; i < 5; i++)
+            {
+                if (Solution[nurseID, day * 5 + i] == 1) sum++;
+            }
+            return sum;
+        }
         
 
         public string RunTests()
@@ -458,40 +478,45 @@ namespace NurseSchedulingApp
             }
 
             var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
+            var currentPath = Environment.CurrentDirectory;
 
             writer.Close();
             writer2.Close();
 
-            System.Diagnostics.Process processCopy = new System.Diagnostics.Process();
-            System.Diagnostics.ProcessStartInfo startInfo =
-                new System.Diagnostics.ProcessStartInfo
-                {
-                    WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                    FileName = "cmd.exe",
-                    Arguments =
-                        $"/C copy {projectPath}\\NurseSchedulingApp\\schedule.csv {projectPath}\\NurseSchedulingApp\\Resources\\Tests"
-                };
-            processCopy.StartInfo = startInfo;
-            processCopy.Start();
+            System.Diagnostics.ProcessStartInfo startInfo;
 
-            System.Diagnostics.Process processTests = new System.Diagnostics.Process();
+            using (System.Diagnostics.Process processCopy = new System.Diagnostics.Process())
+            {
+                startInfo =
+                    new System.Diagnostics.ProcessStartInfo
+                    {
+                        WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                        FileName = "cmd.exe",
+                        Arguments =
+                            $"/C copy {currentPath}\\schedule.csv {projectPath}\\NurseSchedulingApp\\Resources\\Tests"
+                    };
+                processCopy.StartInfo = startInfo;
+                processCopy.Start();
+            }
 
-            startInfo =
-                new System.Diagnostics.ProcessStartInfo
-                {
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal,
-                    FileName = "cmd.exe",
-                    Arguments =
-                        $"/C cd {projectPath}\\NurseSchedulingApp\\Resources\\Tests && py tests.py"
-                };
-            processTests.StartInfo = startInfo;
-            processTests.Start();
+            using (System.Diagnostics.Process processTests = new System.Diagnostics.Process())
+            {
 
-            return processTests.StandardOutput.ReadToEnd();
+                startInfo =
+                    new System.Diagnostics.ProcessStartInfo
+                    {
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal,
+                        FileName = "cmd.exe",
+                        Arguments =
+                            $"/C cd {projectPath}\\NurseSchedulingApp\\Resources\\Tests && py tests.py"
+                    };
+                processTests.StartInfo = startInfo;
+                processTests.Start();
 
-
+                return processTests.StandardOutput.ReadToEnd();
+            }
         }
     }
 }

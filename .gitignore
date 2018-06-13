@@ -259,3 +259,12 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+NurseSchedulingApp\.API/schedule\.csv
+
+NurseSchedulingApp\.API/schedule2\.csv
+
+NurseSchedulingApp/Resources/Tests/schedule\.csv
+
+NurseSchedulingApp/schedule\.csv
+
+NurseSchedulingApp/schedule2\.csv

@@ -1,7 +1,3 @@
-* {
-  font-family: Lato;
-}
-
 .schedule-week {
   display: flex;
   flex-wrap: nowrap;
@@ -13,10 +9,10 @@
   margin-top: 20px;
 }
 
-.constrain-passed {
+.constraint-passed {
   background-color: #D4EDDA;
 }
 
-.constrain-failed {
+.constraint-failed {
   background-color: #F8D7DA;
 }

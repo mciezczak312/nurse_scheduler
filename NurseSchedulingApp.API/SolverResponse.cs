@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace NurseSchedulingApp.API
 {
@@ -6,6 +7,6 @@ namespace NurseSchedulingApp.API
     {
         public IEnumerable<IEnumerable<IEnumerable<ScheduleDataDTO>>> FirstWeek { get; set; }
         public IEnumerable<IEnumerable<IEnumerable<ScheduleDataDTO>>> Schedule { get; set; }
-        public string TestsResult { get; set; }
+        public JObject TestsResult { get; set; }
     }
 }
