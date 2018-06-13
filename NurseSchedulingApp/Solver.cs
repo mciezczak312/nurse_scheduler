@@ -21,6 +21,7 @@ namespace NurseSchedulingApp
         public List<int> LateShifts { get; set; }
         public List<int> SaturdaysRest { get; set; }
         public List<int> AllShifts { get; set; }
+        public int[,] FirstWeek { get; set; }
 
         public int[] WeekendsDays { get; set; }
         public int[,] Solution { get; set; }
@@ -29,7 +30,7 @@ namespace NurseSchedulingApp
         private Dictionary<int, int> NursesShiftsDict;
         private Random rand = new Random();
 
-        public Solver()
+        public Solver(int[,] _firstWeek)
         {
             NormalDays = new List<int> { 0, 1, 2, 3, 4, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32 };
             WeekendsDays = new[] { 5, 6, 12, 13, 19, 20, 26, 27, 33, 34 };
@@ -57,6 +58,10 @@ namespace NurseSchedulingApp
             }
 
             Solution = new int[16, AllDays * 5];
+            FirstWeek = _firstWeek;
+
+
+
             NursesShiftsDict = new Dictionary<int, int>();
             for (int i = 0; i < AllNurses; i++)
             {
@@ -64,51 +69,49 @@ namespace NurseSchedulingApp
                 if (i == 12) NursesShiftsDict.Add(i, 20);
                 if (i > 12) NursesShiftsDict.Add(i, 13);
             }
-
-
         }
 
         public void AssignNightShifts()
         {
-            int currentNurse = 0;
-            var reset2 = new List<int>(){2,7,9,14,16,21,23,28,30,34};
-            var reset3 = new List<int>(){5,12,19, 26,33};
+            var randomNumbers = Enumerable.Range(0, AllNurses).OrderBy(x => rand.Next()).ToList();
+            int index = 0;
+
+            var reset2 = new List<int>() { 2, 7, 9, 14, 16, 21, 23, 28, 30, 34 };
+            var reset3 = new List<int>() { 5, 12, 19, 26, 33 };
             for (int i = 0; i < AllDays; i++)
             {
                 if (reset2.Contains(i))
                 {
                     if (i < 32)
                     {
-                        Solution[currentNurse, (i * 5 + 3) + 1] = 1;
-                        Solution[currentNurse, (i * 5 + 3) + 6] = 1; //two rests after night shifts
+                        Solution[randomNumbers[index], (i * 5 + 3) + 1] = 1;
+                        Solution[randomNumbers[index], (i * 5 + 3) + 6] = 1;
                     }
-                    currentNurse++;
-                    
+                    index++;
+
                 }
                 if (reset3.Contains(i))
                 {
                     if (i < 32)
                     {
-                        Solution[currentNurse, (i * 5 + 3) + 1] = 1;
-                        Solution[currentNurse, (i * 5 + 3) + 6] = 1;
+                        Solution[randomNumbers[index], (i * 5 + 3) + 1] = 1;
+                        Solution[randomNumbers[index], (i * 5 + 3) + 6] = 1;
                     }
-                    currentNurse++;
-                    
+                    index++;
                 }
 
-                Solution[currentNurse, i * 5 + 3] = 1; //asign night shift
-                
+                Solution[randomNumbers[index], i * 5 + 3] = 1;
             }
         }
 
         public void AssignRestShiftsForWeekends()
         {
-            var weekendShifts = new Dictionary<int, Tuple<int,int>>();
-            weekendShifts.Add(0, new Tuple<int, int>(29,34));
-            weekendShifts.Add(1, new Tuple<int, int>(29+35, 34+35));
-            weekendShifts.Add(2, new Tuple<int, int>(29+35+35, 34+35+35));
-            weekendShifts.Add(3, new Tuple<int, int>(29+35+35+35, 34+35+35+35));
-            weekendShifts.Add(4, new Tuple<int, int>(29+35+35+35+35, 34+35+35+35+35));
+            var weekendShifts = new Dictionary<int, Tuple<int, int>>();
+            weekendShifts.Add(0, new Tuple<int, int>(29, 34));
+            weekendShifts.Add(1, new Tuple<int, int>(29 + 35, 34 + 35));
+            weekendShifts.Add(2, new Tuple<int, int>(29 + 35 + 35, 34 + 35 + 35));
+            weekendShifts.Add(3, new Tuple<int, int>(29 + 35 + 35 + 35, 34 + 35 + 35 + 35));
+            weekendShifts.Add(4, new Tuple<int, int>(29 + 35 + 35 + 35 + 35, 34 + 35 + 35 + 35 + 35));
 
             foreach (var weekendShift in weekendShifts)
             {
@@ -147,14 +150,14 @@ namespace NurseSchedulingApp
 
                 if (weekendShift.Key == 3)
                 {
-                    for (int i =2; i <= 7; i++)
+                    for (int i = 2; i <= 7; i++)
                     {
                         if (i == 4) continue;
                         Solution[i, weekendShift.Value.Item1] = 1;
                         Solution[i, weekendShift.Value.Item2] = 1;
                     }
 
-                    
+
                     Solution[8, weekendShift.Value.Item1] = 1;
                     Solution[8, weekendShift.Value.Item2] = 1;
                 }
@@ -173,40 +176,58 @@ namespace NurseSchedulingApp
                 }
 
             }
+        }
 
-            
-            
+        public void AssignFirstWeek()
+        {
+            for (int i = 0; i < 16; i++)
+            {
+                for (int j = 0; j < 35; j++)
+                {
+                    Solution[i, j] = FirstWeek[i, j];
+                }
+            }
+        }
+
+        public void RestAfterNights()
+        {
+            for (int i = 0; i < AllNurses; i++)
+            {
+                if (FirstWeek[i, 33] == 1)
+                {
+                    Solution[i, 4] = 1;
+                    Solution[i, 9] = 1;
+                }
+            }
         }
 
         public int Solve()
         {
             Solution = new int[16, AllDays * 5];
-
+            
+            RestAfterNights();
             AssignNightShifts();
-            //AssignRestShiftsForWeekends();
-            //RunTests();
-
 
             int lastDay = 0;
 
             for (int shift = 0; shift < AllDays * 5; shift++)
             {
+
                 var day = GetDayFromShift(shift);
                 int shiftType = GetShiftType(shift);
-                
+
 
                 if (lastDay != day)
                 {
-                    //new day
-                        AssignRestShift(lastDay);
+                    AssignRestShift(lastDay);
                 }
 
                 if (shift == 174)
                 {
-                        AssignRestShift(day);
+                    AssignRestShift(day);
                 }
 
-                if (shiftType == 4 || shiftType== (int) ShiftsTypes.Night)
+                if (shiftType == 4 || shiftType == (int)ShiftsTypes.Night)
                     continue;
 
                 int neededNurses = 0;
@@ -296,7 +317,7 @@ namespace NurseSchedulingApp
             //During any period of 24 consecutive hours, at least 11 hours of rest is required.
             if (GetDayFromShift(shift) > 0)
             {
-                if (GetShiftType(shift) == (int) ShiftsTypes.Early)
+                if (GetShiftType(shift) == (int)ShiftsTypes.Early)
                 {
                     if (Solution[nurseId, shift - 3] == 1) return false;
                 }
@@ -315,6 +336,8 @@ namespace NurseSchedulingApp
                     return false;
                 }
             }
+
+
 
             //one nurse doesnt want late shifts
             if (nurseId == 0 && GetShiftType(shift) == 2) return false;
@@ -338,7 +361,6 @@ namespace NurseSchedulingApp
                     return false;
                 }
             }
-
             
 
 
@@ -365,6 +387,25 @@ namespace NurseSchedulingApp
                     }
                 }
             }
+
+            if (day == 0)
+            {
+                if (GetShiftType(shift) == (int)ShiftsTypes.Early)
+                {
+                    if (FirstWeek[nurseId, 32] == 1) return false;
+                    if (FirstWeek[nurseId, 33] == 1) return false;
+                }
+                if (GetShiftType(shift) == (int)ShiftsTypes.Day)
+                {
+                    if (FirstWeek[nurseId, 32] == 1) return false;
+                    if (FirstWeek[nurseId, 33] == 1) return false;
+                }
+                if (GetShiftType(shift) == (int) ShiftsTypes.Late)
+                {
+                    if (FirstWeek[nurseId, 34] == 1) return false;
+                }
+
+            }
             return true;
         }
 
@@ -375,17 +416,11 @@ namespace NurseSchedulingApp
                    Solution[nurseID, day * 5 + 2] == 1 ||
                    Solution[nurseID, day * 5 + 3] == 1;
         }
-
-        bool WorksNightShift(int nurseID, int day)
-        {
-            if (day == 0) return Solution[nurseID, 3] == 0;
-            return Solution[nurseID, day * 4 - 1] == 0;
-        }
+        
 
         public string RunTests()
         {
             var writer = new StreamWriter("schedule.csv");
-
 
             for (int i = 0; i < AllNurses; i++)
             {
@@ -398,9 +433,34 @@ namespace NurseSchedulingApp
                 writer.WriteLine();
             }
 
+            var writer2 = new StreamWriter("schedule2.csv");
+
+            for (int i = 0; i < AllNurses; i++)
+            {
+                writer2.Write("Nurse#" + i + ",");
+
+                for (int j = 0; j < 35; j++)
+                {
+                    if (FirstWeek[i, j] == 1)
+                    {
+                        writer2.Write(j % 5 + ",");
+                    }
+                }
+
+                for (int j = 0; j < AllDays * 5; j++)
+                {
+                    if (Solution[i, j] == 1)
+                    {
+                        writer2.Write(j%5+",");
+                    }
+                }
+                writer2.WriteLine();
+            }
+
             var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
 
             writer.Close();
+            writer2.Close();
 
             System.Diagnostics.Process processCopy = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo =
@@ -431,8 +491,7 @@ namespace NurseSchedulingApp
 
             return processTests.StandardOutput.ReadToEnd();
 
-            Console.WriteLine("Done");
-            Console.ReadLine();
+
         }
     }
 }

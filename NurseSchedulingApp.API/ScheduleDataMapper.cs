@@ -11,26 +11,28 @@ namespace NurseSchedulingApp
         
         public ScheduleDataMapper()
         {
-            NursesList = new Dictionary<int, string>();
-            NursesList.Add(0, "Magda");
-            NursesList.Add(1, "Pola");
-            NursesList.Add(2, "Kamila");
-            NursesList.Add(3, "Katarzyna");
-            NursesList.Add(4, "Blanka");
-            NursesList.Add(5, "Tamara");
-            NursesList.Add(6, "Beata");
-            NursesList.Add(7, "Bożena");
-            NursesList.Add(8, "Nina");
-            NursesList.Add(9, "Weronika");
-            NursesList.Add(10, "Ania");
-            NursesList.Add(11, "Teresa");
-            NursesList.Add(12, "Natalia");
-            NursesList.Add(13, "Aleksandra");
-            NursesList.Add(14, "Adriana");
-            NursesList.Add(15, "Joanna");
+            NursesList = new Dictionary<int, string>
+            {
+                {0, "Magda"},
+                {1, "Pola"},
+                {2, "Kamila"},
+                {3, "Katarzyna"},
+                {4, "Blanka"},
+                {5, "Tamara"},
+                {6, "Beata"},
+                {7, "Bożena"},
+                {8, "Nina"},
+                {9, "Weronika"},
+                {10, "Ania"},
+                {11, "Teresa"},
+                {12, "Natalia"},
+                {13, "Aleksandra"},
+                {14, "Adriana"},
+                {15, "Joanna"}
+            };
         }
 
-        public IEnumerable<IEnumerable<IEnumerable<ScheduleDataDTO>>> MapScheduleToDTO(int [,] solution)
+        public IEnumerable<IEnumerable<IEnumerable<ScheduleDataDTO>>> MapScheduleToDTO(int [,] solution, int upperBound = 35*5)
         {
             var scheduleData = new List<List<List<ScheduleDataDTO>>>();
             var week = -1;
@@ -48,7 +50,7 @@ namespace NurseSchedulingApp
             }
             
 
-            for (int i = 0; i < 35*5; i++)
+            for (int i = 0; i < upperBound; i++)
             {
                 int day = (int)Math.Floor(i / 5.0) % 7;
                 int shiftType = i % 5;

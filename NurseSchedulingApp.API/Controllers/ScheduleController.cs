@@ -8,15 +8,19 @@ namespace NurseSchedulingApp.API.Controllers
         [HttpGet]
         public SolverResponse Get()
         {
-            var solver = new Solver();
+            var parser = new FirstWeekParser();
+
+            var solver = new Solver(parser.GetFirstWeekFromFile("first_week_schedule.txt", true));
             while (solver.Solve() == 0) ;
 
             var mapper = new ScheduleDataMapper();
-            var dto = mapper.MapScheduleToDTO(solver.Solution);
+            var dtoSchedule = mapper.MapScheduleToDTO(solver.Solution);
+            var dtoFirstWeek = mapper.MapScheduleToDTO(solver.FirstWeek, 35);
 
             return new SolverResponse
             {
-                Schedule = dto,
+                FirstWeek = dtoFirstWeek,
+                Schedule = dtoSchedule,
                 TestsResult = solver.RunTests()
             };
         }

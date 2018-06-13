@@ -21,4 +21,10 @@
     <ProjectReference Include="..\NurseSchedulingApp\NurseSchedulingApp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="first_week_schedule.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
