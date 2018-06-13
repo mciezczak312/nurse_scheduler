@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
-using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 
 namespace NurseSchedulingApp
 {
-    class Solver
+    enum ShiftsTypes
+    {
+        Early = 0,
+        Day = 1,
+        Late = 2,
+        Night = 3,
+        Rest = 4
+    }
+
+    public class Solver
     {
         public List<int> NormalDays { get; set; }
         public List<int> NightShifts { get; set; }
@@ -63,9 +68,124 @@ namespace NurseSchedulingApp
 
         }
 
+        public void AssignNightShifts()
+        {
+            int currentNurse = 0;
+            var reset2 = new List<int>(){2,7,9,14,16,21,23,28,30,34};
+            var reset3 = new List<int>(){5,12,19, 26,33};
+            for (int i = 0; i < AllDays; i++)
+            {
+                if (reset2.Contains(i))
+                {
+                    if (i < 32)
+                    {
+                        Solution[currentNurse, (i * 5 + 3) + 1] = 1;
+                        Solution[currentNurse, (i * 5 + 3) + 6] = 1; //two rests after night shifts
+                    }
+                    currentNurse++;
+                    
+                }
+                if (reset3.Contains(i))
+                {
+                    if (i < 32)
+                    {
+                        Solution[currentNurse, (i * 5 + 3) + 1] = 1;
+                        Solution[currentNurse, (i * 5 + 3) + 6] = 1;
+                    }
+                    currentNurse++;
+                    
+                }
+
+                Solution[currentNurse, i * 5 + 3] = 1; //asign night shift
+                
+            }
+        }
+
+        public void AssignRestShiftsForWeekends()
+        {
+            var weekendShifts = new Dictionary<int, Tuple<int,int>>();
+            weekendShifts.Add(0, new Tuple<int, int>(29,34));
+            weekendShifts.Add(1, new Tuple<int, int>(29+35, 34+35));
+            weekendShifts.Add(2, new Tuple<int, int>(29+35+35, 34+35+35));
+            weekendShifts.Add(3, new Tuple<int, int>(29+35+35+35, 34+35+35+35));
+            weekendShifts.Add(4, new Tuple<int, int>(29+35+35+35+35, 34+35+35+35+35));
+
+            foreach (var weekendShift in weekendShifts)
+            {
+                if (weekendShift.Key == 0)
+                {
+                    for (int i = 15; i >= 10; i--)
+                    {
+                        if (i == 10) continue;
+                        Solution[i, weekendShift.Value.Item1] = 1;
+                        Solution[i, weekendShift.Value.Item2] = 1;
+                    }
+                }
+
+                if (weekendShift.Key == 1)
+                {
+                    for (int i = 15; i >= 10; i--)
+                    {
+                        if (i == 13) continue;
+                        Solution[i, weekendShift.Value.Item1] = 1;
+                        Solution[i, weekendShift.Value.Item2] = 1;
+                    }
+                }
+
+                if (weekendShift.Key == 2)
+                {
+                    for (int i = 0; i <= 4; i++)
+                    {
+                        Solution[i, weekendShift.Value.Item1] = 1;
+                        Solution[i, weekendShift.Value.Item2] = 1;
+                    }
+                    Solution[0, weekendShift.Value.Item1] = 1;
+                    Solution[0, weekendShift.Value.Item2] = 1;
+                    Solution[9, weekendShift.Value.Item1] = 1;
+                    Solution[9, weekendShift.Value.Item2] = 1;
+                }
+
+                if (weekendShift.Key == 3)
+                {
+                    for (int i =2; i <= 7; i++)
+                    {
+                        if (i == 4) continue;
+                        Solution[i, weekendShift.Value.Item1] = 1;
+                        Solution[i, weekendShift.Value.Item2] = 1;
+                    }
+
+                    
+                    Solution[8, weekendShift.Value.Item1] = 1;
+                    Solution[8, weekendShift.Value.Item2] = 1;
+                }
+
+                if (weekendShift.Key == 4)
+                {
+                    for (int i = 5; i <= 9; i++)
+                    {
+                        if (i == 7) continue;
+                        Solution[i, weekendShift.Value.Item1] = 1;
+                        Solution[i, weekendShift.Value.Item2] = 1;
+                    }
+
+                    Solution[0, weekendShift.Value.Item1] = 1;
+                    Solution[0, weekendShift.Value.Item2] = 1;
+                }
+
+            }
+
+            
+            
+        }
+
         public int Solve()
         {
             Solution = new int[16, AllDays * 5];
+
+            AssignNightShifts();
+            //AssignRestShiftsForWeekends();
+            //RunTests();
+
 
             int lastDay = 0;
 
@@ -73,21 +193,20 @@ namespace NurseSchedulingApp
             {
                 var day = GetDayFromShift(shift);
                 int shiftType = GetShiftType(shift);
-
-
+                
 
                 if (lastDay != day)
                 {
                     //new day
-                    AssignRestShift(lastDay);
+                        AssignRestShift(lastDay);
                 }
 
                 if (shift == 174)
                 {
-                    AssignRestShift(day);
+                        AssignRestShift(day);
                 }
 
-                if (shiftType == 4)
+                if (shiftType == 4 || shiftType== (int) ShiftsTypes.Night)
                     continue;
 
                 int neededNurses = 0;
@@ -174,6 +293,19 @@ namespace NurseSchedulingApp
 
         private bool CheckHardConstrains(int nurseId, int shift)
         {
+            //During any period of 24 consecutive hours, at least 11 hours of rest is required.
+            if (GetDayFromShift(shift) > 0)
+            {
+                if (GetShiftType(shift) == (int) ShiftsTypes.Early)
+                {
+                    if (Solution[nurseId, shift - 3] == 1) return false;
+                }
+                if (GetShiftType(shift) == (int)ShiftsTypes.Day)
+                {
+                    if (Solution[nurseId, shift - 4] == 1) return false;
+                }
+            }
+
             //one shift per day
             int day = GetDayFromShift(shift);
             for (int j = day * 5; j < day * 5 + 5; j++)
@@ -188,16 +320,6 @@ namespace NurseSchedulingApp
             if (nurseId == 0 && GetShiftType(shift) == 2) return false;
 
             Solution[nurseId, shift] = 1;
-
-            //maxium number night shifts for nurses is 3
-            var nightShiftSum = NightShifts.Count(nightShift => Solution[nurseId, nightShift] == 1);
-            if (nightShiftSum > 3)
-            {
-                Solution[nurseId, shift] = 0;
-                return false;
-            }
-
-
 
             // maximum numbers for each nurse
             for (int i = 0; i < AllNurses; i++)
@@ -216,6 +338,8 @@ namespace NurseSchedulingApp
                     return false;
                 }
             }
+
+            
 
 
             if (day > 6)
@@ -241,57 +365,6 @@ namespace NurseSchedulingApp
                     }
                 }
             }
-
-            if (day > 3)
-            {
-                for (int j = 0; j < AllNurses; j++)
-                {
-                    int left = 0;
-                    int right = 2;
-
-                    while (right < day + 1)
-                    {
-
-                        var sum = NightShifts.Where(x => x > left * 5 && x <= right * 5 + 5).ToList();
-
-
-                        if (Solution[j, sum[0]] == 1 && Solution[j, sum[1]] == 1 && Solution[j, sum[2]] == 1)
-                        {
-                            if (sum[2] + 11 < AllDays * 5)
-                            {
-                                if (Solution[nurseId, sum[2] + 6] == 0 || Solution[nurseId, sum[2] + 11] == 0)
-                                {
-                                    Solution[nurseId, shift] = 0;
-                                    return false;
-                                }
-
-                            }
-
-                        }
-
-                        if (Solution[j, sum[0]] == 1 && Solution[j, sum[1]] == 1)
-                        {
-                            if (sum[2] + 11 < AllDays * 5)
-                            {
-                                if (Solution[nurseId, sum[2] + 6] == 0 || Solution[nurseId, sum[2] + 11] == 0)
-                                {
-                                    Solution[nurseId, shift] = 0;
-                                    return false;
-                                }
-                            }
-                        }
-
-
-                        left++;
-                        right++;
-                    }
-
-                }
-            }
-
-
-
-
             return true;
         }
 
@@ -309,10 +382,8 @@ namespace NurseSchedulingApp
             return Solution[nurseID, day * 4 - 1] == 0;
         }
 
-        public void PrintSolution()
+        public string RunTests()
         {
-            Console.WriteLine("Save?");
-            Console.ReadKey();
             var writer = new StreamWriter("schedule.csv");
 
 
@@ -338,7 +409,7 @@ namespace NurseSchedulingApp
                     WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
                     FileName = "cmd.exe",
                     Arguments =
-                        $"/C copy {projectPath}\\NurseSchedulingApp\\schedule.csv {projectPath}\\NurseSchedulingApp\\Tests"
+                        $"/C copy {projectPath}\\NurseSchedulingApp\\schedule.csv {projectPath}\\NurseSchedulingApp\\Resources\\Tests"
                 };
             processCopy.StartInfo = startInfo;
             processCopy.Start();
@@ -348,6 +419,8 @@ namespace NurseSchedulingApp
             startInfo =
                 new System.Diagnostics.ProcessStartInfo
                 {
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
                     WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal,
                     FileName = "cmd.exe",
                     Arguments =
@@ -356,7 +429,10 @@ namespace NurseSchedulingApp
             processTests.StartInfo = startInfo;
             processTests.Start();
 
+            return processTests.StandardOutput.ReadToEnd();
+
             Console.WriteLine("Done");
+            Console.ReadLine();
         }
     }
 }

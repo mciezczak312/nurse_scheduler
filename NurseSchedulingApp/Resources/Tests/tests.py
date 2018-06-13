@@ -5,6 +5,7 @@
 
 import csv
 import random
+import json
 
 DAY_SHIFT = 0
 EARLY_SHIFT = 1
@@ -184,4 +185,5 @@ eightConstraint(nursesArray)
 ninthConstraint(nursesArray)
 tenthConstraint(nursesArray)
 eleventhConstraint(nursesArray)
-print(hardConstraints)
+jsonarray = json.dumps(hardConstraints)
+print(jsonarray)

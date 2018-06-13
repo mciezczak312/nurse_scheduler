@@ -1,0 +1,22 @@
+* {
+  font-family: Lato;
+}
+
+.schedule-week {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  margin-top: 30px;
+}
+
+.container-fluid {
+  margin-top: 20px;
+}
+
+.constrain-passed {
+  background-color: #D4EDDA;
+}
+
+.constrain-failed {
+  background-color: #F8D7DA;
+}

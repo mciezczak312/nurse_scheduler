@@ -6,14 +6,17 @@ namespace NurseSchedulingApp
     {
         static void Main(string[] args)
         {
+            //var parser = new FirstWeekParser();
+            //parser.GetFirstWeekFromFile("first_week_schedule.txt");
+
             var solver = new Solver();
             while (solver.Solve() == 0)
             {
-                
+
             }
-            
-            
-            solver.PrintSolution();
+
+
+            solver.RunTests();
             Console.ReadLine();
         }
     }

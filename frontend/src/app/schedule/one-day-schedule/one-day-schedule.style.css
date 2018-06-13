@@ -1,0 +1,63 @@
+.schedule-table {
+  height: auto;
+  width: 140px;
+  border-radius: 3px 3px 3px 3px;
+  -moz-border-radius: 3px 3px 3px 3px;
+  -webkit-border-radius: 3px 3px 3px 3px;
+  border: 1px solid lightgray;
+  background: white;
+}
+
+.schedule-table-header {
+  height: 30px;
+  width: 100%;
+  size: 0.7rem;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 30px;
+  border-bottom: solid 1px lightgray;
+  margin-bottom: 3px;
+  background-color: whitesmoke;
+}
+
+.shift-list {
+  height: 100%;
+  width: 100%;
+}
+
+.shift-element {
+  width: 100%;
+  height: 20px;
+  size: 0.5rem;
+  vertical-align: middle;
+  text-align: left;
+  margin-bottom: 3px;
+  line-height: 20px;
+  padding-left: 10px;
+  box-sizing: border-box;
+  border-bottom: solid 1px;
+  border-right: solid 10px;
+}
+
+.shift-element:last-child {
+  border-radius: 0px 0px 3px 3px;
+  -moz-border-radius: 0px 0px 3px 3px;
+  -webkit-border-radius: 0px 0px 3px 3px;
+  margin-bottom: -1px;
+}
+
+.shift-early {
+  border-color: lightskyblue;
+}
+
+.shift-day {
+  border-color: lightgreen;
+}
+
+.shift-late {
+  border-color: orange;
+}
+
+.shift-night {
+  border-color: darkslateblue;
+}

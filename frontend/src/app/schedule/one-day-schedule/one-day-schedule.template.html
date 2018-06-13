@@ -1,0 +1,14 @@
+<div class="schedule-table">
+  <div class="schedule-table-header">
+    <strong>{{dayOfWeek}}</strong>
+  </div>
+  <section class="shift-list">
+    <div *ngFor="let item of data" class="shift-element"
+         [class.shift-early]="item.shift === 'EARLY'"
+         [class.shift-day]="item.shift === 'DAY'"
+         [class.shift-late]="item.shift === 'LATE'"
+         [class.shift-night]="item.shift === 'NIGHT'">
+      {{item.nurseName}}
+    </div>
+  </section>
+</div>
