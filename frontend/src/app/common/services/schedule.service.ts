@@ -25,13 +25,12 @@ export class ScheduleService {
     return this.http.get<NurseModel[]>('http://localhost:59533/api/schedule/nursesList')
   }
 
-  getScheduleForNurse(id: number): any[] {
+  getScheduleForNurse(id: number):any[] {
     const res = [];
     this.scheduleResponse.schedule.forEach((x, indexWeek) => {
       x.forEach((z, indexDay) => {
         z.forEach(obj => {
           if (obj.nurseId === id) {
-            console.warn("week: " +indexWeek+ " day: "+ indexDay)
             res.push({...obj, week: indexWeek, day: indexDay});
           }
         });

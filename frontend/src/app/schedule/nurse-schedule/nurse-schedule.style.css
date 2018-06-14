@@ -7,9 +7,27 @@
   
 .grid>* {
   background-color: #eee;
-  height: 400px;
+  height: 350px;
 }
 
 .card-body {
   text-align: center;
+}
+
+.card-link:hover {
+  cursor: pointer;
+  color: #0069D9;
+}
+
+.card-link {
+  color: #007bff
+}
+
+.disabled {
+  color: #888;
+}
+
+.disabled:hover {
+  color: #888;
+  cursor: default;
 }

@@ -33,7 +33,6 @@ export class ScheduleTableComponent implements OnDestroy {
   getSchedule() {
     this.subscription = this.scheduleService.getSolverResponse().subscribe(response => {
       this.scheduleModel = {...response}
-      console.log(this.scheduleService.getScheduleForNurse(1));
     });
   }
 

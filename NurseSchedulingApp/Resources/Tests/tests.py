@@ -184,7 +184,6 @@ def fourthSoftConstraint(shifts):
             for week in weeks:
                 del week[4::5]
             weeks = [sum(item) for item in weeks]
-            print(weeks)
             for index2, working_days in enumerate(weeks):
                 if working_days < 2:
                     weeks[index2] = 2 - working_days
@@ -232,4 +231,5 @@ fourthSoftConstraint(nursesArray)
 jsonarray = json.dumps(hardConstraints)
 jsonarray2 = json.dumps(softConstraints)
 print(jsonarray)
+print(';;')
 print(jsonarray2)

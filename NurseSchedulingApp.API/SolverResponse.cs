@@ -7,6 +7,7 @@ namespace NurseSchedulingApp.API
     {
         public IEnumerable<IEnumerable<IEnumerable<ScheduleDataDTO>>> FirstWeek { get; set; }
         public IEnumerable<IEnumerable<IEnumerable<ScheduleDataDTO>>> Schedule { get; set; }
-        public JObject TestsResult { get; set; }
+        public JObject HardConstraintsTestsResult { get; set; }
+        public JObject SoftConstraintsTestsResult { get; set; }
     }
 }
