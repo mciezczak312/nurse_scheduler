@@ -23,6 +23,5 @@ export class FileUploadComponent implements OnInit {
     this.fileUploadService.postFile(this.fileToUpload).subscribe(x => {
       this.toastr.success(x, 'File uploaded successfully');
     });
-  } 
-
+  }
 }
