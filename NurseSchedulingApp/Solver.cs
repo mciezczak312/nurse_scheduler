@@ -76,7 +76,7 @@ namespace NurseSchedulingApp
             var randomNumbers = Enumerable.Range(0, AllNurses).OrderBy(x => rand.Next()).ToList();
             int index = 0;
 
-            var reset2 = new List<int>() { 2, 7, 9, 14, 16, 21, 23, 28, 30, 34 };
+            var reset2 = new List<int>() { 2, 7, 9, 14, 16, 21, 23, 28, 30, 35 };
             var reset3 = new List<int>() { 5, 12, 19, 26, 33 };
             for (int i = 0; i < AllDays; i++)
             {
@@ -206,8 +206,8 @@ namespace NurseSchedulingApp
             Solution = new int[16, AllDays * 5];
             
             RestAfterNights();
+            //AssignRestShiftsForWeekends();
             AssignNightShifts();
-
             int lastDay = 0;
 
             for (int shift = 0; shift < AllDays * 5; shift++)
