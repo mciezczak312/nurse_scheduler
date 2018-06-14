@@ -27,15 +27,23 @@ export class ScheduleService {
 
   getScheduleForNurse(id: number):any[] {
     const res = [];
-    this.scheduleResponse.schedule.forEach((x, indexWeek) => {
-      x.forEach((z, indexDay) => {
-        z.forEach(obj => {
-          if (obj.nurseId === id) {
-            res.push({...obj, week: indexWeek, day: indexDay});
+    let rest: boolean = true;
+    if (this.scheduleResponse) {
+      this.scheduleResponse.schedule.forEach((x, indexWeek) => {
+        x.forEach((z, indexDay) => {
+          rest = true;
+          z.forEach(obj => {
+            if (obj.nurseId === id) {
+              rest = false;
+              res.push({...obj, week: indexWeek, day: indexDay});
+            }
+          });
+          if (rest) {
+            res.push({nurseId: id, firstName: '', shift: 'REST', week: indexWeek, day: indexDay})
           }
         });
       });
-    });
+    }
     return res;
   }
 

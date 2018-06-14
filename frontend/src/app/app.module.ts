@@ -34,7 +34,10 @@ const appRoutes: Routes = [
     component: NurseScheduleComponent,
     resolve: { schedule : ScheduleResolver }
   },
-  {path: 'nurses/:nurseId', component: NurseScheduleDetailsComponent},
+  {
+    path: 'nurses/:nurseId',
+    component: NurseScheduleDetailsComponent
+  },
   {
     path: 'constraints',
     component: ConstrainsComponent

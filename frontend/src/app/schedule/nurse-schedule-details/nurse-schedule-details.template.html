@@ -1,0 +1,13 @@
+<div *ngIf="nurse" class="container-fluid">
+  <div class="card d-print-none">
+    <div class="card-body">
+        <h3 class="card-title">{{nurse.firstName}}</h3>
+        <h6>Number of hours per week: {{nurse.numberOfHours/5}}</h6>
+    </div>
+  </div>
+</div>
+
+
+<pre *ngIf="data">
+  {{data | json}}
+</pre>
