@@ -17,6 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ConstrainsComponent } from './schedule/constrains/constrains.component';
 import { NurseScheduleDetailsComponent } from './schedule/nurse-schedule-details/nurse-schedule-details.component';
 import { HomeComponent } from './home/home.component';
+import { LoadingModule } from 'ngx-loading';
 
 const appRoutes: Routes = [
   {
@@ -52,6 +53,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    LoadingModule
   ],
   declarations: [
     AppComponent,

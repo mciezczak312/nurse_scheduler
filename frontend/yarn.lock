@@ -4097,6 +4097,10 @@ next-tick@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
 
+ngx-loading@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/ngx-loading/-/ngx-loading-1.0.14.tgz#19758c33ea3fa9bb96dca1f40ca19d4d86b8042c"
+
 ngx-toastr@^8.8.0:
   version "8.8.0"
   resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-8.8.0.tgz#69dc4a174f14b16eafefc19e16c923357fd11de5"

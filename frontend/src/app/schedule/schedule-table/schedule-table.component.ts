@@ -13,6 +13,7 @@ import { SolverResponse } from '../../common/models/solver-response';
 export class ScheduleTableComponent implements OnDestroy {
   
   scheduleModel: SolverResponse;
+  public loading = false;
 
   scheduleCost: number;
   dayIds: number[] = [0, 1, 2, 3, 4, 5, 6];
@@ -34,8 +35,10 @@ export class ScheduleTableComponent implements OnDestroy {
   }
 
   getSchedule() {
+    this.loading = true;
     this.subscription = this.scheduleService.getSolverResponse().subscribe(response => {
       this.scheduleModel = {...response}
+      this.loading = false;
       this.scheduleCost = this.calculateCost();
     });
   }
