@@ -20,6 +20,8 @@
           <div [ngClass]="{'constraint-passed' : true, 'constraint-failed': scheduleModel.softConstraintsTestsResult[i]!==0}" *ngFor="let i of [1,2,3,4,5,6]">
             {{i}}: Broken {{scheduleModel.softConstraintsTestsResult[i]}} times
           </div>
+          <div class="dropdown-divider"></div>
+          <p>COST: {{scheduleCost}}</p>
         </div>
       </div>
     </div>

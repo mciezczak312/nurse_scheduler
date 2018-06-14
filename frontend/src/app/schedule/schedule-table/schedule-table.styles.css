@@ -3,6 +3,9 @@
   flex-wrap: nowrap;
   justify-content: space-evenly;
   margin-top: 30px;
+  padding: 15px 6px;
+  border: 1px dashed #0069D9;
+  border-radius: 2px;
 }
 
 .container-fluid {

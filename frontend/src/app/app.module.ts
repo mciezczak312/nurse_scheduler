@@ -16,11 +16,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { ConstrainsComponent } from './schedule/constrains/constrains.component';
 import { NurseScheduleDetailsComponent } from './schedule/nurse-schedule-details/nurse-schedule-details.component';
+import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
   {
     path: '',
-    redirectTo: '/schedule',
+    component: HomeComponent,
     pathMatch: 'full'
   },
   { path: 'schedule',
@@ -60,7 +61,8 @@ const appRoutes: Routes = [
     NurseScheduleComponent,
     FileUploadComponent,
     ConstrainsComponent,
-    NurseScheduleDetailsComponent
+    NurseScheduleDetailsComponent,
+    HomeComponent
   ],
   providers: [
     { provide: ScheduleService, useClass: ScheduleService },
