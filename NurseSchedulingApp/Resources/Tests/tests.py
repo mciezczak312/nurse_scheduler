@@ -4,7 +4,6 @@
 # 0 - nie chce LATE
 
 import csv
-import random
 import json
 
 DAY_SHIFT = 0
@@ -101,7 +100,7 @@ def fifthConstraint(shifts):
 
 # 42h odpoczynku po 2+ zmianach nocnych -> po 2 ostatnich zmianach nocnych musza byc 2 zmiany restu
 def sixthConstraint(shifts):
-    def mykCykPyk(shift):
+    def mapper(shift):
         if shift == [0,0]:
             return 'o'
         if shift == [0,1]:
@@ -110,10 +109,10 @@ def sixthConstraint(shifts):
             return 'n'
     for nurse in shifts:
         nurseArray = [nurse[i:i+2] for i in range(3, len(nurse), 5)]
-        nurseArray = [mykCykPyk(i) for i in nurseArray]
+        nurseArray = [mapper(i) for i in nurseArray]
         hardConstraints[6] += 1 if (len(subfinder(nurseArray, ['n','n','r','o'])) + len(subfinder(nurseArray, ['n','n','o'])) + len(subfinder(nurseArray, ['n','n','r','n']))) else 0
 
-# 11h przerwy po zmianie -> po poznej nie mozna wczesnej anii dziennej
+# 11h przerwy po zmianie -> po poznej nie mozna wczesnej ani dziennej
 def seventhConstraint(shifts):
     for nurse in shifts:
         nurseLateArray = [nurse[i] for i in range(2, len(nurse), 5)]  # lista zmian late
@@ -158,13 +157,53 @@ def eleventhConstraint(shifts):
     if sum(nurseLateArray):
         hardConstraints[11] += 1
 
+def secondSoftConstraint(shifts):
+    #spelnione zawsze, bo ktorys hard constraint
+    softConstraints[2] = 0
+
+def thirdSoftConstraint(shifts):
+    for index, nurse in enumerate(shifts):
+        if (index <= 12):
+            weeks = [item for item in [nurse[i:i+35] for i in range(0, len(nurse), 35)]]
+            for week in weeks:
+                del week[4::5]
+            weeks = [sum(item) for item in weeks]
+            for index2, working_days in enumerate(weeks):
+                if working_days < 4:
+                    weeks[index2] = 4 - working_days
+                elif working_days > 5:
+                    weeks[index2] = working_days - 5
+                else:
+                    weeks[index2] = 0
+            softConstraints[3] += sum(weeks)
+
+def fourthSoftConstraint(shifts):
+    for index, nurse in enumerate(shifts):
+        if (index > 12):
+            weeks = [item for item in [nurse[i:i+35] for i in range(0, len(nurse), 35)]]
+            for week in weeks:
+                del week[4::5]
+            weeks = [sum(item) for item in weeks]
+            print(weeks)
+            for index2, working_days in enumerate(weeks):
+                if working_days < 2:
+                    weeks[index2] = 2 - working_days
+                elif working_days > 3:
+                    weeks[index2] = working_days - 3
+                else:
+                    weeks[index2] = 0
+            softConstraints[4] += sum(weeks)
+
+
+
+
 
 nursesArray = []
 
 
 with open('schedule.csv', newline='') as csvfile:
-    spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
-    for row in spamreader:
+    reader = csv.reader(csvfile, delimiter=',', quotechar='|')
+    for row in reader:
         nursesArray.append(row)
 
 # for nurse in nursesArray:
@@ -185,5 +224,12 @@ eightConstraint(nursesArray)
 ninthConstraint(nursesArray)
 tenthConstraint(nursesArray)
 eleventhConstraint(nursesArray)
+
+secondSoftConstraint(nursesArray)
+thirdSoftConstraint(nursesArray)
+fourthSoftConstraint(nursesArray)
+
 jsonarray = json.dumps(hardConstraints)
+jsonarray2 = json.dumps(softConstraints)
 print(jsonarray)
+print(jsonarray2)
