@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SolverResponse } from '../../common/models/solver-response';
 import { ScheduleService } from '../../common/services/schedule.service';
 import { NurseModel } from '../../common/models/nurse-model';
@@ -15,6 +15,7 @@ export class NurseScheduleComponent implements OnInit {
   nurses: NurseModel[];
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private scheduleService: ScheduleService
   ) {}
@@ -24,5 +25,12 @@ export class NurseScheduleComponent implements OnInit {
     this.scheduleService.getNursesList().subscribe(x => {
       this.nurses = x;
     });
+  }
+
+  navigateToDetails(id: number) {    
+    if (!!this.schedule) {
+      this.router.navigate([`/nurses/${id}`])
+    }
+    
   }
 }

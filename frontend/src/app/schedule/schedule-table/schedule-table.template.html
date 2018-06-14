@@ -17,11 +17,15 @@
         </div>
       </div>
     </div>
-  </div>  
+  </div>
+
+
   <div *ngIf="scheduleModel.schedule">
-      <div *ngFor="let i of [0,1,2,3,4]" class="schedule-week">
-        <pz-one-day-schedule *ngFor="let id of dayIds" [data]="scheduleModel.schedule[i][id]" [day]="id"></pz-one-day-schedule>
-      </div>
+    <div class="schedule-week transparent-week d-print-none">
+      <pz-one-day-schedule *ngFor="let id of dayIds" [data]="scheduleModel.firstWeek[0][id]" [day]="id"></pz-one-day-schedule>
+    </div>
+    <div *ngFor="let i of [0,1,2,3,4]" class="schedule-week">
+      <pz-one-day-schedule *ngFor="let id of dayIds" [data]="scheduleModel.schedule[i][id]" [day]="id"></pz-one-day-schedule>
+    </div>
   </div>
 </div>
-
