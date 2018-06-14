@@ -14,6 +14,7 @@ export class ScheduleTableComponent implements OnDestroy {
   
   scheduleModel: SolverResponse;
 
+  scheduleCost: number;
   dayIds: number[] = [0, 1, 2, 3, 4, 5, 6];
   weeks: number[] = [0,1,2,3,4];
 
@@ -28,12 +29,23 @@ export class ScheduleTableComponent implements OnDestroy {
   ngOnInit(): void {
     let data = this.route.snapshot.data['schedule'];
     this.scheduleModel = {...data};
+    this.scheduleCost = this.calculateCost();
+    
   }
 
   getSchedule() {
     this.subscription = this.scheduleService.getSolverResponse().subscribe(response => {
       this.scheduleModel = {...response}
+      this.scheduleCost = this.calculateCost();
     });
+  }
+
+  calculateCost() {
+    let sum = 0;
+    Object.keys(this.scheduleModel.softConstraintsTestsResult).forEach(x => 
+      sum = sum + this.scheduleModel.softConstraintsTestsResult[x]
+    );
+    return sum;
   }
 
   ngOnDestroy(): void {
