@@ -19,7 +19,11 @@ export class OneDayScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dayOfWeek = mapDayOfWeek(this.day);
+    if (this.day == 7) {
+      this.dayOfWeek = 'Legend';
+    } else {
+      this.dayOfWeek = mapDayOfWeek(this.day);
+    }
   }
 }
 

@@ -13,7 +13,14 @@ import { SolverResponse } from '../../common/models/solver-response';
 export class ScheduleTableComponent implements OnDestroy {
 
   scheduleModel: SolverResponse;
-  public loading = false;
+  loading = false;
+  legend = [
+    {shift: 'EARLY', nurseName: 'Early'},
+    {shift: 'DAY', nurseName: 'Day'},
+    {shift: 'LATE', nurseName: 'Late'},
+    {shift: 'NIGHT', nurseName: 'Night'}
+  ]
+
 
   scheduleCost: number;
   dayIds: number[] = [0, 1, 2, 3, 4, 5, 6];
