@@ -65,10 +65,10 @@ def thirdConstraint(shifts):
         if index in range(0, 12):
             if count > 23:
                 hardConstraints[3] += 1
-        if index == 13:
+        if index == 12:
             if count > 20:
                 hardConstraints[3] += 1
-        if index in range(14, 16):
+        if index in range(13, 16):
             if count > 13:
                 hardConstraints[3] += 1
 
@@ -157,10 +157,31 @@ def eleventhConstraint(shifts):
     if sum(nurseLateArray):
         hardConstraints[11] += 1
 
-def secondSoftConstraint(shifts):
-    #spelnione zawsze, bo ktorys hard constraint
-    softConstraints[2] = 0
 
+# wolne lub pracujace weekendy
+def firstSoftConstraint(shifts):
+    for nurse in shifts:
+        nurseFridaysLateNightArray = [sum(nurse[i:i+2]) for i in range(22, len(nurse), 35)]
+        nurseSaturdayRestArray = [nurse[i] for i in range(28, len(nurse), 35)]
+        nurseSundayRestArray = [nurse[i] for i in range(34, len(nurse), 35)]
+        nurseWeekendRestArray = [sum(x) for x in list(zip(nurseSaturdayRestArray, nurseSundayRestArray))]
+        array = list(zip(nurseFridaysLateNightArray, nurseWeekendRestArray))
+        for weekend in array:
+            if not (weekend[1] == 0 or weekend == (0,2)):
+                softConstraints[1] += 1
+    softConstraints[1] *= 1000
+
+# 2-3 nocne pod rzad jesli caly lub niepelny etat
+def secondSoftConstraint(shifts):
+    for index, nurse in enumerate(shifts):
+        if (index <= 12):
+            nightsArray = [item for sublist in [nurse[i:i+1] for i in range(3, len(nurse), 5)] for item in sublist]
+            singleNights = len(subfinder(nightsArray, [0,1,0]))
+            overThreeNights = len(subfinder(nightsArray, [1,1,1,1]))
+            softConstraints[2] += singleNights + overThreeNights
+    softConstraints[2] *= 1000
+
+# 4-5 zmian w tygodniu przy calym lub niepelnym etacie
 def thirdSoftConstraint(shifts):
     for index, nurse in enumerate(shifts):
         if (index <= 12):
@@ -176,7 +197,9 @@ def thirdSoftConstraint(shifts):
                 else:
                     weeks[index2] = 0
             softConstraints[3] += sum(weeks)
+    softConstraints[3] *= 10
 
+# 2-3 zmiany w tygodniu dla pracownikow na pol etatu i mniej
 def fourthSoftConstraint(shifts):
     for index, nurse in enumerate(shifts):
         if (index > 12):
@@ -192,8 +215,31 @@ def fourthSoftConstraint(shifts):
                 else:
                     weeks[index2] = 0
             softConstraints[4] += sum(weeks)
+    softConstraints[4] *= 10
 
+# 5-6 zmian pod rząd jak na cały etat lub niepelny
+def fifthSoftConstraint(shifts):
+    for index, nurse in enumerate(shifts):
+        if (index <= 12):
+            nurseArray = [item for sublist in [nurse[i:i+1] for i in range(4, len(nurse), 5)] for item in sublist]
+            oneShift = len(subfinder(nurseArray, [1,0,1]))
+            twoShifts = len(subfinder(nurseArray, [1,0,0,1]))
+            threeShifts = len(subfinder(nurseArray, [1,0,0,0,1]))
+            softConstraints[5] += 3 * oneShift + 2 * twoShifts + threeShifts
+    softConstraints[5] *= 10
 
+# unikac nocnej po wczesnej
+def sixthSoftConstraint(shifts):
+    for nurse in shifts:
+        nurseEarlyArray = [nurse[i] for i in range(0, len(nurse), 5)]
+        nurseNightArray = [nurse[i] for i in range(3, len(nurse), 5)]  # lista zmian night
+        nurseNightArray = nurseNightArray[1:len(nurseNightArray)]   # lista zmian night poczynajÄc od dnia drugiego
+        nurseNightArray.append(0)    # dodanie, zeby dla ostatniego dnia sie zgadzalo
+        nurseArray = [None] * (len(nurseNightArray) + len(nurseEarlyArray))
+        nurseArray[::2] = nurseEarlyArray
+        nurseArray[1::2] = nurseNightArray   # tutaj sobie zmerdzowalem naprzemiennie obie te tablice
+        nurseArray = [nurseArray[i:i+2] for i in range(0, len(nurseArray), 2)]  # tutaj pakuje w pary
+        softConstraints[6] += 1 if [1,1] in nurseArray else 0   # jezeli po early jest night to constraint zlamany
 
 
 
@@ -224,9 +270,12 @@ ninthConstraint(nursesArray)
 tenthConstraint(nursesArray)
 eleventhConstraint(nursesArray)
 
+firstSoftConstraint(nursesArray)
 secondSoftConstraint(nursesArray)
 thirdSoftConstraint(nursesArray)
 fourthSoftConstraint(nursesArray)
+fifthSoftConstraint(nursesArray)
+sixthSoftConstraint(nursesArray)
 
 jsonarray = json.dumps(hardConstraints)
 jsonarray2 = json.dumps(softConstraints)
