@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ScheduleService } from '../../common/services/schedule.service';
+import { NurseModel } from '../../common/models/nurse-model';
 
 @Component({
   selector: 'app-nurse-schedule-details',
-  templateUrl: './nurse-schedule-details.component.html',
-  styleUrls: ['./nurse-schedule-details.component.css']
+  templateUrl: './nurse-schedule-details.template.html',
+  styleUrls: ['./nurse-schedule-details.styles.css']
 })
 export class NurseScheduleDetailsComponent implements OnInit {
 
   data : any[];
+  nurse: NurseModel;
 
   constructor(
     private route: ActivatedRoute,
@@ -17,8 +19,10 @@ export class NurseScheduleDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.data = this.scheduleService.getScheduleForNurse(+params.nurseId);
+      this.data = this.scheduleService.getScheduleForNurse(+params.id);
+      this.scheduleService.getNursesList().subscribe(nurses => {
+        this.nurse = nurses.filter(nurse => nurse.id == params.id)[0];
+      });
     });
   }
-
 }

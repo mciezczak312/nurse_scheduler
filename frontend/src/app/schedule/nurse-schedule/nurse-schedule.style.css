@@ -4,10 +4,10 @@
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fit, 250px);
   }
-  
-.grid>* {
+
+.grid > * {
   background-color: #eee;
-  height: 350px;
+  height: 250px;
 }
 
 .card-body {

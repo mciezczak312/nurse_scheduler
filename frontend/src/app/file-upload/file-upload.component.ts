@@ -1,27 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FileUploadService } from '../common/services/file-upload.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService, ActiveToast } from 'ngx-toastr';
 
 @Component({
   selector: 'app-file-upload',
-  templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.css']
+  templateUrl: './file-upload.template.html',
+  styleUrls: ['./file-upload.styles.css']
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent implements OnDestroy {
 
   fileToUpload: File = null;
+  private activeToast: ActiveToast<any>;
 
-  constructor(
-    protected fileUploadService: FileUploadService,
-    private toastr: ToastrService) { }
+  constructor(protected fileUploadService: FileUploadService, private toastr: ToastrService) { }
 
-  ngOnInit() {
+  ngOnDestroy(): void {
+    if (this.activeToast) {
+      this.toastr.clear(this.activeToast.toastId);
+    }
   }
 
   handleFileInput(files: FileList) {
     this.fileToUpload = files.item(0);
     this.fileUploadService.postFile(this.fileToUpload).subscribe(x => {
-      this.toastr.success(x, 'File uploaded successfully');
+      this.activeToast = this.toastr.success(x, 'File uploaded successfully');
     });
   }
 }

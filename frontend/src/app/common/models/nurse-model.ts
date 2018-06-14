@@ -1,5 +1,5 @@
 export class NurseModel {
-    nurseId: number;
+    id: number;
     firstName: string;
     numberOfHours: number;
 }

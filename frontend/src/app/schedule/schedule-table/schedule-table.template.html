@@ -1,10 +1,6 @@
 <div class="container-fluid">
   <div class="card d-print-none">
-    <div class="card-header">
-      Constraints
-    </div>
     <div class="card-body">
-
       <div class="row">
         <div class="col-sm">
           <h5 class="card-title">Schedule table</h5>
@@ -13,17 +9,17 @@
         </div>
         <div class="col-sm" *ngIf="scheduleModel.hardConstraintsTestsResult">
           <h5>Hard Constraints</h5>
-          <div [ngClass]="{'constraint-passed' : true, 'constraint-failed': scheduleModel.hardConstraintsTestsResult[i]!==0}" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">
-            {{i}}: Broken {{scheduleModel.hardConstraintsTestsResult[i]}} times
+          <div [ngClass]="{'constraint-passed' : true, 'constraint-failed': scheduleModel.hardConstraintsTestsResult[i]!== 0}" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">
+            {{i}}. Broken {{scheduleModel.hardConstraintsTestsResult[i]}} {{scheduleModel.hardConstraintsTestsResult[i] == 1 ? 'time' : 'times'}}
           </div>
         </div>
         <div class="col-sm" *ngIf="scheduleModel.softConstraintsTestsResult">
           <h5>Soft Constraints</h5>
           <div [ngClass]="{'constraint-passed' : true, 'constraint-failed': scheduleModel.softConstraintsTestsResult[i]!==0}" *ngFor="let i of [1,2,3,4,5,6]">
-            {{i}}: Broken {{scheduleModel.softConstraintsTestsResult[i]}} times
+            {{i}}. Cost: {{scheduleModel.softConstraintsTestsResult[i]}}
           </div>
           <div class="dropdown-divider"></div>
-          <p>COST: {{scheduleCost}}</p>
+          <p>Total cost: {{scheduleCost}}</p>
         </div>
       </div>
     </div>
@@ -38,4 +34,6 @@
       <pz-one-day-schedule *ngFor="let id of dayIds" [data]="scheduleModel.schedule[i][id]" [day]="id"></pz-one-day-schedule>
     </div>
   </div>
+
+  <br><br>
 </div>

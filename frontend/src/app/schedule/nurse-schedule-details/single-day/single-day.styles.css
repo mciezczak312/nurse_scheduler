@@ -1,0 +1,34 @@
+.single-day {
+  height: 115px;
+  width: 115px;
+  padding: 5px;
+  border-radius: 3px 3px 3px 3px;
+  -moz-border-radius: 3px 3px 3px 3px;
+  -webkit-border-radius: 3px 3px 3px 3px;
+  border: 5px solid lightgray;
+  background: white;
+}
+
+.single-day:not(last) {
+  margin-right: 20px;
+}
+
+.shift-early {
+  border-color: lightskyblue;
+}
+
+.shift-day {
+  border-color: lightgreen;
+}
+
+.shift-late {
+  border-color: orange;
+}
+
+.shift-night {
+  border-color: darkslateblue;
+}
+
+.shift {
+  text-align: center;
+}

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { ScheduleService } from '../../common/services/schedule.service';
-import { ScheduleData } from '../one-day-schedule/one-day-schedule.component';
+import { ScheduleData } from './one-day-schedule/one-day-schedule.component';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 import { SolverResponse } from '../../common/models/solver-response';
@@ -11,7 +11,7 @@ import { SolverResponse } from '../../common/models/solver-response';
   styleUrls: ['./schedule-table.styles.css']
 })
 export class ScheduleTableComponent implements OnDestroy {
-  
+
   scheduleModel: SolverResponse;
   public loading = false;
 
@@ -24,14 +24,13 @@ export class ScheduleTableComponent implements OnDestroy {
   constructor(
     private scheduleService: ScheduleService,
     private route: ActivatedRoute) {
-      
+
   }
 
   ngOnInit(): void {
-    let data = this.route.snapshot.data['schedule'];
+    const data: SolverResponse = this.route.snapshot.data['schedule'];
     this.scheduleModel = {...data};
     this.scheduleCost = this.calculateCost();
-    
   }
 
   getSchedule() {
@@ -45,9 +44,11 @@ export class ScheduleTableComponent implements OnDestroy {
 
   calculateCost() {
     let sum = 0;
-    Object.keys(this.scheduleModel.softConstraintsTestsResult).forEach(x => 
-      sum = sum + this.scheduleModel.softConstraintsTestsResult[x]
-    );
+    if (this.scheduleModel.softConstraintsTestsResult) {
+      Object.keys(this.scheduleModel.softConstraintsTestsResult).forEach(x =>
+        sum = sum + this.scheduleModel.softConstraintsTestsResult[x]
+      );
+    }
     return sum;
   }
 

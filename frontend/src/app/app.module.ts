@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { OneDayScheduleComponent } from './schedule/one-day-schedule/one-day-schedule.component';
+import { OneDayScheduleComponent } from './schedule/schedule-table/one-day-schedule/one-day-schedule.component';
 import { NavbarComponent } from './navbar/navbar/navbar.component';
 import { ScheduleService } from './common/services/schedule.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,10 +14,11 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileUploadService } from './common/services/file-upload.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { ConstrainsComponent } from './schedule/constrains/constrains.component';
+import { ConstrainsComponent } from './constrains/constrains.component';
 import { NurseScheduleDetailsComponent } from './schedule/nurse-schedule-details/nurse-schedule-details.component';
 import { HomeComponent } from './home/home.component';
 import { LoadingModule } from 'ngx-loading';
+import { SingleDayComponent } from './schedule/nurse-schedule-details/single-day/single-day.component';
 
 const appRoutes: Routes = [
   {
@@ -34,7 +35,10 @@ const appRoutes: Routes = [
     component: NurseScheduleComponent,
     resolve: { schedule : ScheduleResolver }
   },
-  {path: 'nurses/:nurseId', component: NurseScheduleDetailsComponent},
+  {
+    path: 'nurses/:id',
+    component: NurseScheduleDetailsComponent
+  },
   {
     path: 'constraints',
     component: ConstrainsComponent
@@ -60,7 +64,8 @@ const appRoutes: Routes = [
     FileUploadComponent,
     ConstrainsComponent,
     NurseScheduleDetailsComponent,
-    HomeComponent
+    HomeComponent,
+    SingleDayComponent,
   ],
   providers: [
     { provide: ScheduleService, useClass: ScheduleService },

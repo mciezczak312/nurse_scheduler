@@ -52,7 +52,7 @@ function mapDayOfWeek(day: number) {
 export interface ScheduleData {
   nurseId: number,
   nurseName: string,
-  shift: 'EARLY' | 'DAY' | 'LATE' | 'NIGHT'
+  shift: 'EARLY' | 'DAY' | 'LATE' | 'NIGHT' | 'REST'
 }
 
 

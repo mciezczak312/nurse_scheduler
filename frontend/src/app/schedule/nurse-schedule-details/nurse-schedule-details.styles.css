@@ -1,0 +1,26 @@
+.container-fluid {
+  margin: 20px 0;
+}
+
+.schedule-week {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  padding-bottom: 26px;
+}
+
+.container-fluid {
+  margin-top: 20px;
+}
+
+.constraint-passed {
+  background-color: #D4EDDA;
+}
+
+.constraint-failed {
+  background-color: #F8D7DA;
+}
+
+.transparent-week {
+  opacity: 0.5;
+}
