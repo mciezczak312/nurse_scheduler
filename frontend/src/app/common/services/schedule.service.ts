@@ -15,7 +15,7 @@ export class ScheduleService {
   constructor(protected http: HttpClient) { }
 
   getSolverResponse(): Observable<SolverResponse> {
-    
+
     const res = this.http.get<SolverResponse>(this.apiUrl+'api/schedule')
       .pipe(
         tap(x => this.setScheduleData(x))
@@ -33,18 +33,20 @@ export class ScheduleService {
     let rest: boolean = true;
     if (this.scheduleResponse) {
       this.scheduleResponse.schedule.forEach((x, indexWeek) => {
+        let week = [];
         x.forEach((z, indexDay) => {
           rest = true;
           z.forEach(obj => {
             if (obj.nurseId === id) {
               rest = false;
-              res.push({...obj, week: indexWeek, day: indexDay});
+              week.push({...obj, week: indexWeek, day: indexDay});
             }
           });
           if (rest) {
-            res.push({nurseId: id, firstName: '', shift: 'REST', week: indexWeek, day: indexDay})
+            week.push({nurseId: id, firstName: '', shift: 'REST', week: indexWeek, day: indexDay})
           }
         });
+        res.push(week);
       });
     }
     return res;

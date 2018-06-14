@@ -7,7 +7,8 @@
   </div>
 </div>
 
-
-<pre *ngIf="data">
-  {{data | json}}
-</pre>
+<div class="grid" *ngIf="data">
+  <div class="schedule-week" *ngFor="let week of data">
+    <pz-single-day *ngFor="let day of week" [day]="day.day" [shift]="day.shift"></pz-single-day>
+  </div>
+</div>

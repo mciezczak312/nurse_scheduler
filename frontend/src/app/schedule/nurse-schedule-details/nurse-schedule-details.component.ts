@@ -19,10 +19,9 @@ export class NurseScheduleDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.data = this.scheduleService.getScheduleForNurse(+params.nurseId);
-      console.log(this.data);
+      this.data = this.scheduleService.getScheduleForNurse(+params.id);
       this.scheduleService.getNursesList().subscribe(nurses => {
-        this.nurse = nurses.filter(nurse => nurse.id == params.nurseId)[0];
+        this.nurse = nurses.filter(nurse => nurse.id == params.id)[0];
       });
     });
   }

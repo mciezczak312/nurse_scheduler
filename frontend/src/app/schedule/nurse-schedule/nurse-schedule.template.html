@@ -4,7 +4,7 @@
       <img src="../../../assets/nurse-avatar.png" width="100px">
       <h5 class="card-title">{{nurse.firstName}}</h5>
       <p>Number of hours: {{nurse.numberOfHours / 5}}</p>
-      <span [ngClass]="{'disabled': !schedule}" (click)="navigateToDetails(nurse.id)" class="card-link">{{nurse.nurseId}}See schedule</span>
+      <span [ngClass]="{'disabled': !schedule}" (click)="navigateToDetails(nurse.id)" class="card-link">See schedule</span>
     </div>
   </div>
 </div>

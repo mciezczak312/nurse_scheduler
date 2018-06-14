@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { ScheduleService } from '../../common/services/schedule.service';
-import { ScheduleData } from '../one-day-schedule/one-day-schedule.component';
+import { ScheduleData } from './one-day-schedule/one-day-schedule.component';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 import { SolverResponse } from '../../common/models/solver-response';

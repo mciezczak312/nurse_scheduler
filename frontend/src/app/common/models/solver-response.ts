@@ -1,4 +1,4 @@
-import { ScheduleData } from "../../schedule/one-day-schedule/one-day-schedule.component";
+import { ScheduleData } from "../../schedule/schedule-table/one-day-schedule/one-day-schedule.component";
 
 export class SolverResponse {
     schedule: ScheduleData[][][];
