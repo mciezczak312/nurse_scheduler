@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace NurseSchedulingApp.API.Controllers
@@ -12,10 +11,11 @@ namespace NurseSchedulingApp.API.Controllers
     public class ScheduleController : Controller
     {
         private IHostingEnvironment _hostingEnvironment;
-
+        private ScheduleDataMapper _mapper;
         public ScheduleController(IHostingEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
+            _mapper = new ScheduleDataMapper(); //di here
         }
 
         [Route("uploadFile"), HttpPost, DisableRequestSizeLimit]
@@ -62,9 +62,9 @@ namespace NurseSchedulingApp.API.Controllers
             var solver = new Solver(parser.GetFirstWeekFromFile(fullPath, true));
             while (solver.Solve() == 0) ;
 
-            var mapper = new ScheduleDataMapper();
-            var dtoSchedule = mapper.MapScheduleToDTO(solver.Solution);
-            var dtoFirstWeek = mapper.MapScheduleToDTO(solver.FirstWeek, 35);
+            
+            var dtoSchedule = _mapper.MapScheduleToDTO(solver.Solution);
+            var dtoFirstWeek = _mapper.MapScheduleToDTO(solver.FirstWeek, 35);
             var testResult = solver.RunTests();
 
 
@@ -75,5 +75,12 @@ namespace NurseSchedulingApp.API.Controllers
                 TestsResult = JObject.Parse(testResult)
             };
         }
+
+        [HttpGet, Route("nursesList")]
+        public IEnumerable<NurseDTO> GetNursesList()
+        {
+            return _mapper.GetNursesList();
+        }
     }
+    
 }

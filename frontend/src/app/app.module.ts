@@ -54,7 +54,7 @@ const appRoutes: Routes = [
     FileUploadComponent
   ],
   providers: [
-    { provide: ScheduleService, useClass: FakeScheduleService },
+    { provide: ScheduleService, useClass: ScheduleService },
     ScheduleResolver,
     FileUploadService,
   ],
