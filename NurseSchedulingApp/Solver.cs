@@ -476,8 +476,7 @@ namespace NurseSchedulingApp
                 }
                 writer2.WriteLine();
             }
-
-            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
+            
             var currentPath = Environment.CurrentDirectory;
 
             writer.Close();
@@ -493,7 +492,7 @@ namespace NurseSchedulingApp
                         WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
                         FileName = "cmd.exe",
                         Arguments =
-                            $"/C copy {currentPath}\\schedule.csv {projectPath}\\NurseSchedulingApp\\Resources\\Tests"
+                            $"/C copy {currentPath}\\schedule.csv {currentPath}\\Resources\\Tests"
                     };
                 processCopy.StartInfo = startInfo;
                 processCopy.Start();
@@ -510,7 +509,7 @@ namespace NurseSchedulingApp
                         WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal,
                         FileName = "cmd.exe",
                         Arguments =
-                            $"/C cd {projectPath}\\NurseSchedulingApp\\Resources\\Tests && py tests.py"
+                            $"/C cd {currentPath}\\Resources\\Tests && py tests.py"
                     };
                 processTests.StartInfo = startInfo;
                 processTests.Start();

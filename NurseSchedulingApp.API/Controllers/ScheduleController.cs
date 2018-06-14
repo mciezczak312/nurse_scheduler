@@ -24,13 +24,8 @@ namespace NurseSchedulingApp.API.Controllers
             try
             {
                 var file = Request.Form.Files[0];
-                const string folderName = "Upload";
-                var webRootPath = _hostingEnvironment.WebRootPath;
-                var newPath = Path.Combine(webRootPath, folderName);
-                if (!Directory.Exists(newPath))
-                {
-                    Directory.CreateDirectory(newPath);
-                }
+                var newPath = Environment.CurrentDirectory;
+
                 if (file.Length <= 0) return Json("Upload Successful.");
 
                 const string fileName = "first_week_schedule.txt";
@@ -52,15 +47,14 @@ namespace NurseSchedulingApp.API.Controllers
         public IActionResult Get()
         {
             var parser = new FirstWeekParser();
+            
+            var rootPath = Environment.CurrentDirectory;
 
-            const string folderName = "Upload";
-            var webRootPath = _hostingEnvironment.WebRootPath;
-            var newPath = Path.Combine(webRootPath, folderName);
             const string fileName = "first_week_schedule.txt";
-            var fullPath = Path.Combine(newPath, fileName);
+            var newPath = Path.Combine(rootPath, fileName);
             try
             {
-                var solver = new Solver(parser.GetFirstWeekFromFile(fullPath, true));
+                var solver = new Solver(parser.GetFirstWeekFromFile(newPath, true));
                 var testResults = new string[2];
                 while (true)
                 {
