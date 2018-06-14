@@ -4,6 +4,7 @@
       <div class="row">
         <div class="col-sm">
           <h5 class="card-title">Schedule table</h5>
+          <app-file-upload></app-file-upload>
           <button type="button" class="btn btn-primary" (click)="getSchedule()">Generate Schedule</button>
         </div>
         <div class="col-sm" *ngIf="scheduleModel.hardConstraintsTestsResult">

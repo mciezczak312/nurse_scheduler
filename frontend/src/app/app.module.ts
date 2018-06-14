@@ -42,10 +42,6 @@ const appRoutes: Routes = [
   {
     path: 'constraints',
     component: ConstrainsComponent
-  },
-  {
-    path: 'upload',
-    component: FileUploadComponent
   }
 ];
 
