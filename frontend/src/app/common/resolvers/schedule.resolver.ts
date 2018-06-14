@@ -7,9 +7,9 @@ export class ScheduleResolver implements Resolve<any> {
   constructor(private scheduleService: ScheduleService) {}
 
   resolve() {
-    const schedule = this.scheduleService.getSchedule();
+    const schedule = this.scheduleService.getScheduleData();
     if (schedule) {
-      return JSON.parse(JSON.stringify(this.scheduleService.getSchedule()));
+      return JSON.parse(JSON.stringify(this.scheduleService.getScheduleData()));
     } else {
       return null;
     }

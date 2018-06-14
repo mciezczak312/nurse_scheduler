@@ -6,25 +6,25 @@ import { tap } from 'rxjs/operators';
 @Injectable()
 export class ScheduleService {
 
-  protected schedule;
+  protected scheduleResponse;
 
   constructor(protected http: HttpClient) { }
 
   getSolverResponse(): Observable<any> {
     const res = this.http.get('http://localhost:59533/api/schedule')
       .pipe(
-        tap(x => this.setSchedule(x))
+        tap(x => this.setScheduleData(x))
       );
 
     return res;
   }
 
-  protected setSchedule(x): void {
-    this.schedule = x.schedule;
+  protected setScheduleData(x): void {
+    this.scheduleResponse = x;
   }
 
-  getSchedule(): any {
-    return this.schedule;
+  getScheduleData(): any {
+    return this.scheduleResponse;
   }
 }
 

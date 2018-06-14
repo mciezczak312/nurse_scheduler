@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace NurseSchedulingApp.API
 {
     public class SolverResponse
     {
+        public IEnumerable<IEnumerable<IEnumerable<ScheduleDataDTO>>> FirstWeek { get; set; }
         public IEnumerable<IEnumerable<IEnumerable<ScheduleDataDTO>>> Schedule { get; set; }
-        public string TestsResult { get; set; }
+        public JObject TestsResult { get; set; }
     }
 }

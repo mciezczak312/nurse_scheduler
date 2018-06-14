@@ -9,7 +9,7 @@ export class FakeScheduleService extends ScheduleService {
   getSolverResponse(): Observable<any>{
     const res = this.http.get('../../assets/json.json').
     pipe(
-      tap(x => this.setSchedule(x))
+      tap(x => this.setScheduleData(x))
     );
 
     return res;

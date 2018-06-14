@@ -10,6 +10,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { ScheduleTableComponent} from './schedule/schedule-table/schedule-table.component';
 import { ScheduleResolver } from './common/resolvers/schedule.resolver';
 import { NurseScheduleComponent } from './schedule/nurse-schedule/nurse-schedule.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
+import { FileUploadService } from './common/services/file-upload.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 const appRoutes: Routes = [
   {
@@ -19,11 +23,16 @@ const appRoutes: Routes = [
   },
   { path: 'schedule',
     component: ScheduleTableComponent,
+    resolve: { schedule : ScheduleResolver }
   },
   {
     path: 'nurses',
     component: NurseScheduleComponent,
     resolve: { schedule : ScheduleResolver }
+  },
+  {
+    path: 'upload',
+    component: FileUploadComponent
   }
 ];
 
@@ -33,6 +42,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     BrowserModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   declarations: [
     AppComponent,
@@ -44,6 +55,7 @@ const appRoutes: Routes = [
   providers: [
     { provide: ScheduleService, useClass: FakeScheduleService },
     ScheduleResolver,
+    FileUploadComponent,
   ],
   bootstrap: [ AppComponent ]
 })
