@@ -61,19 +61,42 @@ namespace NurseSchedulingApp.API.Controllers
             try
             {
                 var solver = new Solver(parser.GetFirstWeekFromFile(fullPath, true));
-                while (solver.Solve() == 0) ;
+                var testResults = new string[2];
+                while (true)
+                {
+                    int solverRes;
+                    do
+                    {
+                        solverRes = solver.Solve();
+                    } while (solverRes == 0);
+                    
+                    
+
+                    testResults = solver.RunTests().Split(";;");
+
+                    var tmp = JObject.Parse(testResults[0]);
+                    bool valid = true;
+                    foreach (var obj in tmp)
+                    {
+                        if (obj.Key != "5")
+                        {
+                            if (obj.Value.ToString() != "0") valid = false;
+                        }
+                    }
+
+                    if (solverRes == 1 && valid) break;
+                }
 
 
                 var dtoSchedule = _mapper.MapScheduleToDTO(solver.Solution);
                 var dtoFirstWeek = _mapper.MapScheduleToDTO(solver.FirstWeek, 35);
-                var testResult = solver.RunTests().Split(";;");
 
                 return Ok(new SolverResponse
                 {
                     FirstWeek = dtoFirstWeek,
                     Schedule = dtoSchedule,
-                    HardConstraintsTestsResult = JObject.Parse(testResult[0]),
-                    SoftConstraintsTestsResult = JObject.Parse(testResult[1])
+                    HardConstraintsTestsResult = JObject.Parse(testResults[0]),
+                    SoftConstraintsTestsResult = JObject.Parse(testResults[1])
                 });
 
             }
