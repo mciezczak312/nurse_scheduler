@@ -49,7 +49,7 @@ namespace NurseSchedulingApp.API.Controllers
         }
 
         [HttpGet]
-        public SolverResponse Get()
+        public IActionResult Get()
         {
             var parser = new FirstWeekParser();
 
@@ -58,22 +58,30 @@ namespace NurseSchedulingApp.API.Controllers
             var newPath = Path.Combine(webRootPath, folderName);
             const string fileName = "first_week_schedule.txt";
             var fullPath = Path.Combine(newPath, fileName);
-
-            var solver = new Solver(parser.GetFirstWeekFromFile(fullPath, true));
-            while (solver.Solve() == 0) ;
-
-            
-            var dtoSchedule = _mapper.MapScheduleToDTO(solver.Solution);
-            var dtoFirstWeek = _mapper.MapScheduleToDTO(solver.FirstWeek, 35);
-            var testResult = solver.RunTests();
-
-
-            return new SolverResponse
+            try
             {
-                FirstWeek = dtoFirstWeek,
-                Schedule = dtoSchedule,
-                TestsResult = JObject.Parse(testResult)
-            };
+                var solver = new Solver(parser.GetFirstWeekFromFile(fullPath, true));
+                while (solver.Solve() == 0) ;
+
+
+                var dtoSchedule = _mapper.MapScheduleToDTO(solver.Solution);
+                var dtoFirstWeek = _mapper.MapScheduleToDTO(solver.FirstWeek, 35);
+                var testResult = solver.RunTests();
+
+                return Ok(new SolverResponse
+                {
+                    FirstWeek = dtoFirstWeek,
+                    Schedule = dtoSchedule,
+                    TestsResult = JObject.Parse(testResult)
+                });
+
+            }
+            catch (FileNotFoundException e)
+            {
+                return BadRequest(e.Message);
+            }
+
+
         }
 
         [HttpGet, Route("nursesList")]

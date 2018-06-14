@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { ScheduleService } from '../../common/services/schedule.service';
 import { ScheduleData } from '../one-day-schedule/one-day-schedule.component';
 import { Subscription } from 'rxjs/Subscription';
@@ -33,6 +33,7 @@ export class ScheduleTableComponent implements OnDestroy {
   getSchedule() {
     this.subscription = this.scheduleService.getSolverResponse().subscribe(response => {
       this.scheduleModel = {...response}
+      console.log(this.scheduleService.getScheduleForNurse(1));
     });
   }
 

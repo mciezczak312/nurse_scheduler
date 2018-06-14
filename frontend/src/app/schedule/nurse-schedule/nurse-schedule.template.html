@@ -4,6 +4,16 @@
 
 <ng-template #display>
   Wygenerowano
+  <div class="grid" *ngIf="nurses">
+    <div class="card" *ngFor="let nurse of nurses">
+      <div class="card-body">
+        <img src="../../../assets/nurse-avatar.png" width="100px">
+        <h5 class="card-title">{{nurse.firstName}}</h5>
+         <p>Number of Hours: {{nurse.numberOfHours}}</p>
+         <a href="#" class="card-link">See schedule</a>  <!-- ustawic na dole karty ale nie umiem w css -->        
+      </div>
+    </div>
+  </div>
 </ng-template>
 
 <br>

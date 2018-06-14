@@ -1,0 +1,15 @@
+.grid {
+    margin: 20px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fit, 250px);
+  }
+  
+.grid>* {
+  background-color: #eee;
+  height: 400px;
+}
+
+.card-body {
+  text-align: center;
+}

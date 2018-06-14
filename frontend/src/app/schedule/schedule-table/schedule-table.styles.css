@@ -16,3 +16,11 @@
 .constraint-failed {
   background-color: #F8D7DA;
 }
+
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
