@@ -1,0 +1,11 @@
+<ng-container *ngIf="!schedule; else display">
+  Nie wygenerowano
+</ng-container>
+
+<ng-template #display>
+  Wygenerowano
+</ng-template>
+
+<br><br>
+Tu sie wstawi cardsy z pielegniarkami z obrazkiem, imieniem i iloscia godzin ile mają i na gorze info ze nie wygenerowano<br>
+a jak wygenerowano to po kliknieciu przejdzie na nurses/:id i wyswietli plan dla niej
