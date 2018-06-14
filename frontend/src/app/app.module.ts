@@ -14,6 +14,8 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileUploadService } from './common/services/file-upload.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { ConstrainsComponent } from './schedule/constrains/constrains.component';
+import { NurseScheduleDetailsComponent } from './schedule/nurse-schedule-details/nurse-schedule-details.component';
 
 const appRoutes: Routes = [
   {
@@ -29,6 +31,11 @@ const appRoutes: Routes = [
     path: 'nurses',
     component: NurseScheduleComponent,
     resolve: { schedule : ScheduleResolver }
+  },
+  {path: 'nurses/:nurseId', component: NurseScheduleDetailsComponent},
+  {
+    path: 'constraints',
+    component: ConstrainsComponent
   },
   {
     path: 'upload',
@@ -51,7 +58,9 @@ const appRoutes: Routes = [
     NavbarComponent,
     ScheduleTableComponent,
     NurseScheduleComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    ConstrainsComponent,
+    NurseScheduleDetailsComponent
   ],
   providers: [
     { provide: ScheduleService, useClass: ScheduleService },
