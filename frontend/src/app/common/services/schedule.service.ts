@@ -4,16 +4,19 @@ import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
 import { SolverResponse } from '../models/solver-response';
 import { NurseModel } from '../models/nurse-model';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ScheduleService {
 
   protected scheduleResponse: SolverResponse;
+  private apiUrl = environment.apiUrl
 
   constructor(protected http: HttpClient) { }
 
   getSolverResponse(): Observable<SolverResponse> {
-    const res = this.http.get<SolverResponse>('http://localhost:59533/api/schedule')
+    
+    const res = this.http.get<SolverResponse>(this.apiUrl+'api/schedule')
       .pipe(
         tap(x => this.setScheduleData(x))
       );
@@ -22,7 +25,7 @@ export class ScheduleService {
   }
 
   getNursesList(): Observable<NurseModel[]> {
-    return this.http.get<NurseModel[]>('http://localhost:59533/api/schedule/nursesList')
+    return this.http.get<NurseModel[]>(this.apiUrl+'api/schedule/nursesList')
   }
 
   getScheduleForNurse(id: number):any[] {
