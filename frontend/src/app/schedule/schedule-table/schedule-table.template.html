@@ -9,10 +9,16 @@
           <h5 class="card-title">Schedule table</h5>
           <button type="button" class="btn btn-primary" (click)="getSchedule()">Generate Schedule</button>
         </div>
-        <div class="col-sm" *ngIf="scheduleModel.testsResult">
+        <div class="col-sm" *ngIf="scheduleModel.hardConstraintsTestsResult">
           <h5>Hard Constraints</h5>
-          <div [ngClass]="{'constraint-passed' : true, 'constraint-failed': scheduleModel.testsResult[i]!==0}" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">
-            {{i}}: Broken {{scheduleModel.testsResult[i]}} times
+          <div [ngClass]="{'constraint-passed' : true, 'constraint-failed': scheduleModel.hardConstraintsTestsResult[i]!==0}" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">
+            {{i}}: Broken {{scheduleModel.hardConstraintsTestsResult[i]}} times
+          </div>
+        </div>
+        <div class="col-sm" *ngIf="scheduleModel.softConstraintsTestsResult">
+          <h5>Soft Constraints</h5>
+          <div [ngClass]="{'constraint-passed' : true, 'constraint-failed': scheduleModel.softConstraintsTestsResult[i]!==0}" *ngFor="let i of [1,2,3,4,5,6]">
+            {{i}}: Broken {{scheduleModel.softConstraintsTestsResult[i]}} times
           </div>
         </div>
       </div>

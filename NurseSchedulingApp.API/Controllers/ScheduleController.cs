@@ -66,13 +66,14 @@ namespace NurseSchedulingApp.API.Controllers
 
                 var dtoSchedule = _mapper.MapScheduleToDTO(solver.Solution);
                 var dtoFirstWeek = _mapper.MapScheduleToDTO(solver.FirstWeek, 35);
-                var testResult = solver.RunTests();
+                var testResult = solver.RunTests().Split(";;");
 
                 return Ok(new SolverResponse
                 {
                     FirstWeek = dtoFirstWeek,
                     Schedule = dtoSchedule,
-                    TestsResult = JObject.Parse(testResult)
+                    HardConstraintsTestsResult = JObject.Parse(testResult[0]),
+                    SoftConstraintsTestsResult = JObject.Parse(testResult[1])
                 });
 
             }
