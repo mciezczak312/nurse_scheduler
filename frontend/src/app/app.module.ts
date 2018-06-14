@@ -51,11 +51,12 @@ const appRoutes: Routes = [
     NavbarComponent,
     ScheduleTableComponent,
     NurseScheduleComponent,
+    FileUploadComponent
   ],
   providers: [
     { provide: ScheduleService, useClass: FakeScheduleService },
     ScheduleResolver,
-    FileUploadComponent,
+    FileUploadService,
   ],
   bootstrap: [ AppComponent ]
 })
