@@ -19,7 +19,11 @@ export class OneDayScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dayOfWeek = mapDayOfWeek(this.day);
+    if (this.day == 7) {
+      this.dayOfWeek = 'Legend';
+    } else {
+      this.dayOfWeek = mapDayOfWeek(this.day);
+    }
   }
 }
 
@@ -52,7 +56,7 @@ function mapDayOfWeek(day: number) {
 export interface ScheduleData {
   nurseId: number,
   nurseName: string,
-  shift: 'EARLY' | 'DAY' | 'LATE' | 'NIGHT'
+  shift: 'EARLY' | 'DAY' | 'LATE' | 'NIGHT' | 'REST'
 }
 
 

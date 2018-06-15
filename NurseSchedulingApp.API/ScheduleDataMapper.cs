@@ -32,6 +32,26 @@ namespace NurseSchedulingApp
             };
         }
 
+        public IEnumerable<NurseDTO> GetNursesList()
+        {
+            var result = new List<NurseDTO>();
+            var numberOfHours = 0;
+            for (int i = 0; i < 16; i++)
+            {
+                if (i > 12) numberOfHours = 20 *5;
+                if (i == 12) numberOfHours = 32 * 5;
+                if (i < 12) numberOfHours = 36 * 5;
+                result.Add(new NurseDTO()
+                {
+                    Id = i,
+                    FirstName = NursesList[i],
+                    NumberOfHours = numberOfHours
+                });
+            }
+            return result;
+        }
+
+
         public IEnumerable<IEnumerable<IEnumerable<ScheduleDataDTO>>> MapScheduleToDTO(int [,] solution, int upperBound = 35*5)
         {
             var scheduleData = new List<List<List<ScheduleDataDTO>>>();

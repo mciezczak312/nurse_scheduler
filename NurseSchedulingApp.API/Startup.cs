@@ -40,6 +40,7 @@ namespace NurseSchedulingApp.API
                 opts.AllowAnyMethod();
                 opts.AllowAnyOrigin();
                 
+                
             });
             app.UseMvc();
         }

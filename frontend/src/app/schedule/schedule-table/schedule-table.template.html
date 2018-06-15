@@ -1,27 +1,40 @@
 <div class="container-fluid">
-  <div class="card">
-    <div class="card-header">
-      Constraints
-    </div>
+  <div class="card d-print-none">
     <div class="card-body">
       <div class="row">
         <div class="col-sm">
           <h5 class="card-title">Schedule table</h5>
-          <button type="button" class="btn btn-primary" (click)="getSchedule()">Generate Schedule</button>
+          <app-file-upload></app-file-upload>
+          <button type="button" class="btn btn-primary" (click)="getSchedule()">Generate Schedule</button><br><br>
+          <pz-one-day-schedule *ngIf="scheduleModel.schedule" [data]="legend" [day]="7"></pz-one-day-schedule>
         </div>
-        <div class="col-sm" *ngIf="testsResult">
+        <div class="col-sm" *ngIf="scheduleModel.hardConstraintsTestsResult">
           <h5>Hard Constraints</h5>
-          <div [ngClass]="{'constraint-passed' : true, 'constraint-failed': testsResult[i]!==0}" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">
-            {{i}}: Broken {{testsResult[i]}} times
+          <div [ngClass]="{'constraint-passed' : true, 'constraint-failed': scheduleModel.hardConstraintsTestsResult[i]!== 0}" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">
+            {{i}}. Broken {{scheduleModel.hardConstraintsTestsResult[i]}} {{scheduleModel.hardConstraintsTestsResult[i] == 1 ? 'time' : 'times'}}
           </div>
+        </div>
+        <div class="col-sm" *ngIf="scheduleModel.softConstraintsTestsResult">
+          <h5>Soft Constraints</h5>
+          <div [ngClass]="{'constraint-passed' : true, 'constraint-failed': scheduleModel.softConstraintsTestsResult[i]!==0}" *ngFor="let i of [1,2,3,4,5,6]">
+            {{i}}. Cost: {{scheduleModel.softConstraintsTestsResult[i]}}
+          </div>
+          <div class="dropdown-divider"></div>
+          <p>Total cost: {{scheduleCost}}</p>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="scheduleData">
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
+  <div *ngIf="scheduleModel.schedule">
+    <div class="schedule-week transparent-week d-print-none">
+      <pz-one-day-schedule *ngFor="let id of dayIds" [data]="scheduleModel.firstWeek[0][id]" [day]="id"></pz-one-day-schedule>
+    </div>
     <div *ngFor="let i of [0,1,2,3,4]" class="schedule-week">
-      <pz-one-day-schedule *ngFor="let id of dayIds" [data]="scheduleData[i][id]" [day]="id"></pz-one-day-schedule>
+      <pz-one-day-schedule *ngFor="let id of dayIds" [data]="scheduleModel.schedule[i][id]" [day]="id"></pz-one-day-schedule>
     </div>
   </div>
-</div>
 
+  <br><br>
+</div>

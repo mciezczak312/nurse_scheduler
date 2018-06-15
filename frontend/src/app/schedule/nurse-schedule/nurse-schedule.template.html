@@ -1,11 +1,10 @@
-<ng-container *ngIf="!schedule; else display">
-  Nie wygenerowano
-</ng-container>
-
-<ng-template #display>
-  Wygenerowano
-</ng-template>
-
-<br><br>
-Tu sie wstawi cardsy z pielegniarkami z obrazkiem, imieniem i iloscia godzin ile mają i na gorze info ze nie wygenerowano<br>
-a jak wygenerowano to po kliknieciu przejdzie na nurses/:id i wyswietli plan dla niej
+<div class="grid" *ngIf="nurses">
+  <div class="card" *ngFor="let nurse of nurses">
+    <div class="card-body">
+      <img src="../../../assets/nurse-avatar.png" width="100px">
+      <h5 class="card-title">{{nurse.firstName}}</h5>
+      <p>Number of hours: {{nurse.numberOfHours / 5}}</p>
+      <span [ngClass]="{'disabled': !schedule}" (click)="!!schedule && navigateToDetails(nurse.id)" class="card-link">See schedule</span>
+    </div>
+  </div>
+</div>

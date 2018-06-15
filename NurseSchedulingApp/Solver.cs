@@ -76,7 +76,7 @@ namespace NurseSchedulingApp
             var randomNumbers = Enumerable.Range(0, AllNurses).OrderBy(x => rand.Next()).ToList();
             int index = 0;
 
-            var reset2 = new List<int>() { 2, 7, 9, 14, 16, 21, 23, 28, 30, 34 };
+            var reset2 = new List<int>() { 2, 7, 9, 14, 16, 21, 23, 28, 30, 35 };
             var reset3 = new List<int>() { 5, 12, 19, 26, 33 };
             for (int i = 0; i < AllDays; i++)
             {
@@ -206,8 +206,8 @@ namespace NurseSchedulingApp
             Solution = new int[16, AllDays * 5];
             
             RestAfterNights();
+            //AssignRestShiftsForWeekends();
             AssignNightShifts();
-
             int lastDay = 0;
 
             for (int shift = 0; shift < AllDays * 5; shift++)
@@ -476,8 +476,7 @@ namespace NurseSchedulingApp
                 }
                 writer2.WriteLine();
             }
-
-            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
+            
             var currentPath = Environment.CurrentDirectory;
 
             writer.Close();
@@ -493,7 +492,7 @@ namespace NurseSchedulingApp
                         WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
                         FileName = "cmd.exe",
                         Arguments =
-                            $"/C copy {currentPath}\\schedule.csv {projectPath}\\NurseSchedulingApp\\Resources\\Tests"
+                            $"/C copy {currentPath}\\schedule.csv {currentPath}\\Resources\\Tests"
                     };
                 processCopy.StartInfo = startInfo;
                 processCopy.Start();
@@ -510,7 +509,7 @@ namespace NurseSchedulingApp
                         WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal,
                         FileName = "cmd.exe",
                         Arguments =
-                            $"/C cd {projectPath}\\NurseSchedulingApp\\Resources\\Tests && py tests.py"
+                            $"/C cd {currentPath}\\Resources\\Tests && py tests.py"
                     };
                 processTests.StartInfo = startInfo;
                 processTests.Start();

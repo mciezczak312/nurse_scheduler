@@ -1,11 +1,12 @@
+.container-fluid {
+  margin: 20px 0;
+}
+
 .schedule-week {
   display: flex;
   flex-wrap: nowrap;
-  justify-content: space-evenly;
-  margin-top: 30px;
-  padding: 15px 6px;
-  border: 1px dashed #0069D9;
-  border-radius: 2px;
+  justify-content: center;
+  padding-bottom: 26px;
 }
 
 .container-fluid {

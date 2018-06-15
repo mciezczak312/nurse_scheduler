@@ -1,0 +1,14 @@
+<div *ngIf="nurse" class="container-fluid">
+  <div class="card d-print-none">
+    <div class="card-body">
+        <h3 class="card-title">{{nurse.firstName}}</h3>
+        <h6>Number of hours per week: {{nurse.numberOfHours/5}}</h6>
+    </div>
+  </div>
+</div>
+
+<div class="grid" *ngIf="data">
+  <div class="schedule-week" *ngFor="let week of data">
+    <pz-single-day *ngFor="let day of week" [day]="day.day" [shift]="day.shift"></pz-single-day>
+  </div>
+</div>
